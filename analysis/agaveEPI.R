@@ -77,7 +77,8 @@ counties <- map_data("county") %>%
 ggplot() +
   geom_tile(data = f, aes(x = lon, y = lat, fill = biomass), alpha = 0.5) +
   scale_fill_gradientn(colours = rev(rainbow(7))) +
-  geom_polygon(data = counties, color = 'white', fill = NA, aes(x = long, y = lat, group = group))
+  geom_polygon(data = counties, color = 'white', fill = NA, aes(x = long, y = lat, group = group)) +
+  labs(fill = 'Biomass (Mg/ha-1)')
 
 theme_set(theme_bw())
 ggplot(data = e) +
