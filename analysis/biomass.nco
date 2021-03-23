@@ -1,0 +1,12 @@
+alpha=-7e-07*par^2+0.0016*par-0.001
+beta=0.0279*ppt-0.2851
+beta3=0.051*ppt-0.2851
+gamma=-2.2533e-07*tmin^5+1.3437e-05*tmin^4+-1.6899e-04*tmin^3+-3.8746e-3*tmin^2+0.10527*tmin+0.35194
+where(alpha<0)alpha=0
+where(alpha>1)alpha=1
+where(beta<0)beta=0
+where(beta>1)beta=1
+where(gamma<0)gamma=0
+where(gamma>1)gamma=1
+where(beta3<0)beta3=0
+where(beta3>1)beta3=1
