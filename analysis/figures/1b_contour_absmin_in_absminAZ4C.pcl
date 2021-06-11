@@ -1,0 +1,73 @@
+// BETA BETA BETA
+// Script parsed by PanoplyCL to create a plot. Usage:
+// java -jar PanoplyCL.jar 1b_contour_absmin_in_absminAZ4C.pcl
+
+// Open a dataset.
+var ncdata1 = panoply.openDataset ( "/C:/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/absminAZ4C.nc" );
+
+// Select a variable.
+var ncvar1 = ncdata1.getVariable ( "absmin" );
+
+// Create the plot.
+var myplot = panoply.createPlot ( "lonlat", ncvar1 );
+
+
+// Specify plot settings.
+myplot.set ( "size-factor", 140 );
+myplot.set ( "size-width", 100 );
+myplot.set ( "size-height", 50 );
+myplot.set ( "color-background", "white" );
+
+myplot.set ( "labels-font", "SansSerif" );
+myplot.set ( "labels-super10", false );
+
+myplot.set ( "title-text", "Average Annual Minimum Temperature (deg C)" );
+
+myplot.set ( "interpolate", false );
+myplot.set ( "scale-method", "scalar" );
+myplot.set ( "scale-exponent", 0 );
+myplot.set ( "scale-min", -80.0 );
+myplot.set ( "scale-max", 30.0 );
+myplot.set ( "scale-div-major", 11 );
+myplot.set ( "scale-div-minor", 2 );
+myplot.set ( "scale-tick-size", 11.0 );
+myplot.set ( "scale-tick-format", "%.0f" );
+myplot.set ( "scale-label-custom", false );
+myplot.set ( "scale-label-size", 14.0 );
+
+myplot.set ( "colorbar-name", "CB_RdYlBu.cpt" );
+myplot.set ( "colorbar-invalids", "white" );
+myplot.set ( "colorbar-reverse", false );
+myplot.set ( "colorbar-length", 60 );
+myplot.set ( "colorbar-border-weight", 100 );
+myplot.set ( "colorbar-outlier-side", "both" );
+myplot.set ( "colorbar-outlier-shape", "triangle" );
+myplot.set ( "colorbar-outlier-gap", "thin" );
+
+myplot.set ( "proj-name", "Robinson" );
+myplot.set ( "proj-lon0", 0.0 );
+myplot.set ( "proj-lat0", 35.0 );
+myplot.set ( "border-weight", 50 );
+
+myplot.set ( "proj-shading-vis", false );
+
+myplot.set ( "overlay-1-weight", 0 );
+myplot.set ( "overlay-2-weight", 5 );
+myplot.set ( "overlay-2-name", "MWDB_Coasts_NA_1.cnob" );
+myplot.set ( "overlay-2-color", "rgb(127,127,127)" );
+myplot.set ( "overlay-3-weight", 0 );
+
+myplot.set ( "grid-weight", 0 );
+
+myplot.set ( "contour-weight", 75 );
+myplot.set ( "contour-style", "Dotted" );
+myplot.set ( "contour-color", "black" );
+myplot.set ( "contour-location", "major" );
+myplot.set ( "contour-label-vis", true );
+myplot.set ( "contour-label-size", 10.0 );
+
+myplot.set ( "footnote-minmax-vis", true );
+myplot.set ( "footnote-minmax-format", "Same" );
+
+// Save plot image to disk.
+myplot.saveImage ( "PNG", "1b_contour_absmin_in_absminAZ4C.png" );

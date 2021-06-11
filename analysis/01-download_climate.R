@@ -1,4 +1,4 @@
-vars <- c('tmin','ppt')#, 'srad')
+vars <- c('tmin','ppt', 'srad')
 URL <- "http://thredds.northwestknowledge.net:8080/thredds/fileServer/TERRACLIMATE_ALL/summaries/TerraClimate19611990_VAR.nc"
 for(var in vars){
   varurl <- gsub('VAR', var, URL)

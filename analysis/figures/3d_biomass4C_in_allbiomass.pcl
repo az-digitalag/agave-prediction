@@ -1,0 +1,66 @@
+// BETA BETA BETA
+// Script parsed by PanoplyCL to create a plot. Usage:
+// java -jar PanoplyCL.jar 3d_biomass4C_in_allbiomass.pcl
+
+// Open a dataset.
+var ncdata1 = panoply.openDataset ( "/C:/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/allbiomass.nc" );
+
+// Select a variable.
+var ncvar1 = ncdata1.getVariable ( "biomass4C" );
+
+// Create the plot.
+var myplot = panoply.createPlot ( "lonlat", ncvar1 );
+
+
+// Specify plot settings.
+myplot.set ( "size-factor", 140 );
+myplot.set ( "size-width", 100 );
+myplot.set ( "size-height", 50 );
+myplot.set ( "color-background", "white" );
+
+myplot.set ( "labels-font", "SansSerif" );
+myplot.set ( "labels-super10", false );
+
+myplot.set ( "title-text", "Annual Biomass Production Rainfed, +4C Climate" );
+
+myplot.set ( "interpolate", false );
+myplot.set ( "scale-method", "SCALAR" );
+myplot.set ( "scale-exponent", 0 );
+myplot.set ( "scale-min", 0.0 );
+myplot.set ( "scale-max", 16.267955571955078 );
+myplot.set ( "scale-div-major", 8 );
+myplot.set ( "scale-div-minor", 2 );
+myplot.set ( "scale-tick-size", 11.0 );
+myplot.set ( "scale-tick-format", "%.0f" );
+myplot.set ( "scale-label-custom", false );
+myplot.set ( "scale-label-size", 14.0 );
+
+myplot.set ( "colorbar-name", "DEM_screen.cpt" );
+myplot.set ( "colorbar-invalids", "white" );
+myplot.set ( "colorbar-reverse", true );
+myplot.set ( "colorbar-length", 60 );
+myplot.set ( "colorbar-border-weight", 100 );
+myplot.set ( "colorbar-outlier-side", "NONE" );
+
+myplot.set ( "proj-name", "Robinson" );
+myplot.set ( "proj-lon0", 0.0 );
+myplot.set ( "proj-lat0", 35.0 );
+myplot.set ( "border-weight", 50 );
+
+myplot.set ( "proj-shading-vis", false );
+
+myplot.set ( "overlay-1-weight", 0 );
+myplot.set ( "overlay-2-weight", 50 );
+myplot.set ( "overlay-2-name", "Earth.cno" );
+myplot.set ( "overlay-2-color", "rgb(175,175,175)" );
+myplot.set ( "overlay-3-weight", 0 );
+
+myplot.set ( "grid-weight", 0 );
+
+myplot.set ( "contour-weight", 0 );
+
+myplot.set ( "footnote-minmax-vis", true );
+myplot.set ( "footnote-minmax-format", "Same" );
+
+// Save plot image to disk.
+myplot.saveImage ( "PNG", "3d_biomass4C_in_allbiomass.png" );

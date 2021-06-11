@@ -1,0 +1,68 @@
+// BETA BETA BETA
+// Script parsed by PanoplyCL to create a plot. Usage:
+// java -jar PanoplyCL.jar 4B_biomassdiff_in_biomassdiff.pcl
+
+// Open a dataset.
+var ncdata1 = panoply.openDataset ( "/C:/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/biomassdiff.nc" );
+
+// Select a variable.
+var ncvar1 = ncdata1.getVariable ( "biomassdiff" );
+
+// Create the plot.
+var myplot = panoply.createPlot ( "lonlat", ncvar1 );
+
+
+// Specify plot settings.
+myplot.set ( "size-factor", 130 );
+myplot.set ( "size-width", 100 );
+myplot.set ( "size-height", 50 );
+myplot.set ( "color-background", "white" );
+
+myplot.set ( "labels-font", "SansSerif" );
+myplot.set ( "labels-super10", false );
+
+myplot.set ( "title-text", "Change in Biomass Rainfed, +4C Climate" );
+
+myplot.set ( "interpolate", false );
+myplot.set ( "scale-method", "SCALAR" );
+myplot.set ( "scale-exponent", 0 );
+myplot.set ( "scale-min", -14.0 );
+myplot.set ( "scale-max", 14.0 );
+myplot.set ( "scale-div-major", 7 );
+myplot.set ( "scale-div-minor", 2 );
+myplot.set ( "scale-tick-size", 11.0 );
+myplot.set ( "scale-tick-format", "%.0f" );
+myplot.set ( "scale-label-custom", false );
+myplot.set ( "scale-label-size", 14.0 );
+
+myplot.set ( "colorbar-name", "ViBlGrWhYeOrRe.rgb" );
+myplot.set ( "colorbar-invalids", "white" );
+myplot.set ( "colorbar-reverse", true );
+myplot.set ( "colorbar-length", 60 );
+myplot.set ( "colorbar-border-weight", 100 );
+myplot.set ( "colorbar-outlier-side", "NONE" );
+
+myplot.set ( "proj-name", "Equirectangular Regional" );
+myplot.set ( "proj-lon0", -95.0 );
+myplot.set ( "proj-lat0", 40.0 );
+myplot.set ( "proj-xparam-1", 78.32443735993672 );
+myplot.set ( "proj-xparam-2", 30.0 );
+myplot.set ( "border-weight", 50 );
+
+myplot.set ( "proj-shading-vis", false );
+
+myplot.set ( "overlay-1-weight", 0 );
+myplot.set ( "overlay-2-weight", 50 );
+myplot.set ( "overlay-2-name", "MWDB_Coasts_USA_3.cnob" );
+myplot.set ( "overlay-2-color", "rgb(175,175,175)" );
+myplot.set ( "overlay-3-weight", 0 );
+
+myplot.set ( "grid-weight", 0 );
+
+myplot.set ( "contour-weight", 0 );
+
+myplot.set ( "footnote-minmax-vis", true );
+myplot.set ( "footnote-minmax-format", "Same" );
+
+// Save plot image to disk.
+myplot.saveImage ( "PNG", "4b_biomassdiff_in_biomassdiff.png" );
