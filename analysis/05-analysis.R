@@ -4,6 +4,7 @@ library(exactextractr)
 library(fasterize)
 library(ggplot2)
 library(ggspatial)
+
 # https://datacarpentry.org/r-raster-vector-geospatial/11-vector-raster-integration/index.html
 
 not_suitable_polygons <- st_read('analysis/data/derived_data/not_suitable.gpkg')
@@ -16,13 +17,13 @@ vars <- c('biomass',
           'biomass_irrig',
           'biomass4C_irrig',
           'biomass_rockmulch',
-          'biomass4C_rockmulch')
+          'biomass4C_rockmulch',
+          'biomass_rockmulch_arid',
+          'biomass4C_rockmulch_arid')
 
 
 
 rasters <- lapply(vars, function(x) raster(all_biomass_file, varname = x))
-
-## convert polygons to raster  r <- mask(merge(r, mask.raster), mask.raster, filename = label, format = "GTiff",overwrite = T)
 
 not_suitable_raster <- fasterize(not_suitable_polygons, rasters[[1]])
 
@@ -31,7 +32,7 @@ mymask <- function(raster){
   raster[raster == 0] <- NA
   r <- mask(raster, not_suitable_raster,
             inverse = TRUE,
-            filename = paste0('masked_',varname,'.nc'),
+            filename = paste0('analysis/data/derived_data/masked_',varname,'.nc'),
             format = 'CDF',
             overwrite = TRUE)
 

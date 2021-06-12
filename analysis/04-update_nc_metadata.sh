@@ -53,10 +53,12 @@ ncatted \
   -a description,biomass4C_irrig,m,c,"annual biomass production of Agave americana: irrigated under 4C warming scenario" \
   -a long_name,biomass4C_rockmulch,m,c,biomass4C_rockmulch \
   -a description,biomass4C_rockmulch,m,c,"annual biomass production of Agave americana: rainfed with rock mulch under 4C warming scenario" \
+  -a long_name,biomass_rockmulch_arid,m,c,biomass_rockmulch_arid \
   -a description,biomass_rockmulch_arid,m,c,"annual biomass production of Agave americana: rainfed with rock mulch under  historical climate (1981-2010) for arid regions (<400mm/y precip)" \
+  -a long_name,biomass4C_rockmulch_arid,m,c,biomass4C_rockmulch_arid \
   -a description,biomass4C_rockmulch_arid,m,c,"annual biomass production of Agave americana: rainfed with rock mulch under  historical climate (1981-2010) for arid regions (<400mm/y precip)" \
    allbiomass.nc
-cp
+
 
 
 ## Biomass Difference Files biomassdiff.nc
