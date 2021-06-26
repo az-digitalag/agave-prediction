@@ -1,0 +1,148 @@
+---
+title: "Agave Maps and Figures"
+author: "David LeBauer"
+date: "5/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
+library(dplyr)
+library(kableExtra)
+library(raster)
+library(sf)
+library(exactextractr)
+library(fasterize)
+library(ggplot2)
+library(ggspatial)
+library(ggmap)
+library(rnaturalearth)
+```
+
+## Masking
+
+```{r masks}
+
+# https://datacarpentry.org/r-raster-vector-geospatial/11-vector-raster-integration/index.html
+
+not_suitable_polygons <- st_read('data/derived_data/not_suitable.gpkg')
+
+all_biomass_file <-'data/derived_data/allbiomass.nc'
+
+
+vars <- c('biomass',
+          'biomass4C',
+          'biomass_irrig',
+          'biomass4C_irrig',
+          'biomass_rockmulch',
+          'biomass4C_rockmulch')
+
+
+
+rasters <- lapply(vars, function(x) raster(all_biomass_file, varname = x))
+
+## convert polygons to raster  r <- mask(merge(r, mask.raster), mask.raster, filename = label, format = "GTiff",overwrite = T)
+
+not_suitable_raster <- fasterize(not_suitable_polygons, rasters[[1]])
+
+mymask <- function(raster){
+  varname <- names(raster)
+  raster[raster == 0] <- NA
+  r <- mask(raster, not_suitable_raster,
+            inverse = TRUE,
+            filename = paste0('masked_',varname,'.nc'),
+            format = 'CDF',
+            overwrite = TRUE)
+
+}
+
+masked_rasters <- lapply(rasters, mymask)
+```
+
+```{r total_biomass}
+total_biomass <- lapply(masked_rasters, function(x) cellStats(x, 'sum')  / 1e6)
+names(total_biomass) <- vars
+
+get_area <- function(x){
+  y <- cellStats(area(x, na.rm = TRUE), 'sum')
+}
+total_area <- lapply(masked_rasters, function(x) {
+  x3 <- reclassify(x, cbind(0, 3, NA))
+  x10 <- reclassify(x, cbind(0, 10, NA))
+  list(growing_area = get_area(x) / 1e6,
+       growing_area_gt3 = get_area(x3) / 1e6,
+       growing_area_gt10 = get_area(x10) / 1e6)
+  })
+names(total_area) <- vars
+
+results_table <- bind_cols(bind_rows(total_area), biomass = unlist(total_biomass)) %>% 
+  as_tibble() %>% 
+  transmute(climate = rep(c('current', '4C'), times = 3), 
+         scenario = rep(c('rainfed', 'irrigated', 'rock mulch'), each = 2),
+         `biomass` = biomass,
+         area = growing_area,
+         `area > 3 Mg/ha` = growing_area_gt3,
+         `area > 10 Mg/ha` = growing_area_gt10) 
+
+results_table %>% 
+  kbl(digits = 0, caption = 'biomass in units of millions of metric tons, area in units of millions of square km') %>%
+#  kable_classic(full_width = F, html_font = "Cambria") 
+  kable_minimal(full_width = F, html_font = "Cambria")
+
+
+```
+
+## Figure 2
+
+```{r mean_coefficients}
+coef_rasters <- lapply(c('alpha_mean', 'beta_mean', 'gamma_mean'), 
+                       function(x) raster('data/derived_data/mean_coefs19812010.nc', varname = x))
+
+
+masked_dfs <- lapply(coef_rasters, function(x){
+  x_small <- aggregate(x, 4)
+  x_df <- as.data.frame(as(x_small, "SpatialPixelsDataFrame"))
+  return(x_df)
+})
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+system.time(
+  ggplot() + layer_spatial(r)
+)
+coastlines <- rnaturalearth::ne_coastline(scale = "large", returnclass = "sf")
+
+ggplot(data = coastlines) +
+  geom_sf() +
+  theme_bw() +
+  geom_tile(data = masked_dfs[[1]], mapping = aes(x = x, y = y, fill = biomass)) +
+  scale_color_viridis_c()
+
+```
+
+
+## Figure 3
+
+```{r biomass_figs}
+
+masked_dfs <- lapply(masked_rasters, function(x){
+  x_small <- aggregate(x, 4)
+  x_df <- as.data.frame(as(x_small, "SpatialPixelsDataFrame"))
+  return(x_df)
+})
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+r <- aggregate(masked_rasters[[1]], fact = 4)
+system.time(
+  ggplot() + layer_spatial(r)
+)
+coastlines <- rnaturalearth::ne_coastline(scale = "large", returnclass = "sf")
+
+ggplot(data = coastlines) +
+  geom_sf() +
+  theme_bw() +
+  geom_tile(data = masked_dfs[[1]], mapping = aes(x = x, y = y, fill = biomass)) +
+  scale_color_viridis_c()
+```
+

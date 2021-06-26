@@ -70,7 +70,7 @@ area_biomass_summary <- lapply(
          biomass_gt10 = get_biomass(x10))
   })
 
-readr::write_csv(cbind(scenario = vars, bind_rows(area_biomass_summary)),
+readr::write_csv(cbind(scenario = vars, dplyr::bind_rows(area_biomass_summary)),
                  file = 'analysis/data/derived_data/area_biomass_summary.csv')
 
 masked_dfs <- lapply(masked_rasters, function(x){

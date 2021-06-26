@@ -1,12 +1,12 @@
 // BETA BETA BETA
 // Script parsed by PanoplyCL to create a plot. Usage:
-// java -jar PanoplyCL.jar 3c_biomass_rockmulch_in_allbiomass.pcl
+// java -jar PanoplyCL.jar 3f_biomass4C_rockmulch_in_allbiomass.pcl
 
 // Open a dataset.
 var ncdata1 = panoply.openDataset ( "/C:/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/allbiomass.nc" );
 
 // Select a variable.
-var ncvar1 = ncdata1.getVariable ( "biomass_rockmulch_arid" );
+var ncvar1 = ncdata1.getVariable ( "biomass4C_rockmulch_arid" );
 
 // Create the plot.
 var myplot = panoply.createPlot ( "lonlat", ncvar1 );
@@ -21,19 +21,18 @@ myplot.set ( "color-background", "white" );
 myplot.set ( "labels-font", "SansSerif" );
 myplot.set ( "labels-super10", false );
 
-myplot.set ( "title-text", "Annual Biomass Production Rock Mulch, Current Climate" );
+myplot.set ( "title-text", "Annual Biomass Production Rainfed, +4C Climate" );
 
 myplot.set ( "interpolate", false );
 myplot.set ( "scale-method", "SCALAR" );
 myplot.set ( "scale-exponent", 0 );
 myplot.set ( "scale-min", 0.0 );
-myplot.set ( "scale-max", 16.271476436129568 );
+myplot.set ( "scale-max", 16.076117711390257 );
 myplot.set ( "scale-div-major", 8 );
 myplot.set ( "scale-div-minor", 2 );
 myplot.set ( "scale-tick-size", 11.0 );
 myplot.set ( "scale-tick-format", "%.0f" );
-myplot.set ( "scale-label-custom", true );
-myplot.set ( "scale-label-text", "Annual Biomass Production Rock Mulch, Current Climate" );
+myplot.set ( "scale-label-custom", false );
 myplot.set ( "scale-label-size", 14.0 );
 
 myplot.set ( "colorbar-name", "DEM_screen.cpt" );
@@ -64,4 +63,4 @@ myplot.set ( "footnote-minmax-vis", true );
 myplot.set ( "footnote-minmax-format", "Same" );
 
 // Save plot image to disk.
-myplot.saveImage ( "PNG", "3c_biomass_rockmulch_in_allbiomass.png" );
+myplot.saveImage ( "PNG", "3f_biomass4C_rockmulch_in_allbiomass.png" );
