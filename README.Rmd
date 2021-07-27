@@ -77,6 +77,8 @@ UNEP-WCMC and IUCN (2021), Protected Planet: The World Database on Protected Are
 
 ## Contents
 
+_Note: large files from the derived_data directory are [stored on Box prior to submission](https://arizona.box.com/s/kjecv66pe88gtwdw9h20u0yvbw5thzmu)_
+
 The **analysis** directory contains:
 
   - **Scripts**
@@ -89,7 +91,7 @@ The **analysis** directory contains:
   - [/analysis/data/raw_data](/analysis/data/raw_data): Inputs
     - TERRACLIMATE files must be downloaded to this folder using the `01-download_climate.R` script
     - WPDA Shapefiles can be downloaded from www.protectedplanet.net
-  - [/analysis/data/derived_data](/analysis/data/derived_data): Outputs
+  - [/analysis/data/derived_data](/analysis/data/derived_data): Outputs available
         - `coefs19812010.nc` calculated values of $\alpha$, $\beta$, and $\Gamma$ values for each grid cell under 1981-2010 climate normals for three water availability scenarios 
         - `coefs4C.nc` same as above but for $+4^\circ C$ warming
         - `allbiomass.nc` predicted annual biomass increments for _Agave americana_ under all climates and scenarios
@@ -171,6 +173,6 @@ $$\textrm{ppt}_{\beta=1}=\frac{1+0.2851}{0.0279}\simeq= 46.06093$$
 
 ## Licenses
 
-* **Code :** BSD 3-Clause
-* **Data :** [CC-0](http://creativecommons.org/publicdomain/zero/1.0/) attribution requested in reuse
+* **Code :** [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause)
+* **Data :** are 'public domain' [CC-0](http://creativecommons.org/publicdomain/zero/1.0/): attribution requested in reuse
 
