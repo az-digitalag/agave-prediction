@@ -1,5 +1,7 @@
 ---
-output: html_document
+output:
+  github_document:
+    pandoc_args: --webtex
 ---
 
 
@@ -13,43 +15,33 @@ knitr::opts_chunk$set(
 Title <- "Expanded potential growing region and yield increase for Agave americana with future climate"
 ```
 
-# AgavePrediction
+# Future Agave
 
-This repository contains the data and code for our paper:
+This repository contains the code, code documentation, and data description for our paper:
 
-> Sarah C. Davis1, John T. Abatzoglou, David S. LeBauer, (YYYY). "Expanded potential growing region and yield increase for Agave americana with future climate". 
+> Sarah C. Davis, John T. Abatzoglou, David S. LeBauer, (2021). "Expanded potential growing region and yield increase for Agave americana with future climate". _Submitted to Agronomy_
 
-Our pre-print is online here:
-
-> Sarah C. Davis1, John T. Abatzoglou, David S. LeBauer, (YYYY). "Expanded potential growing region and yield increase for Agave americana with future climate". Journal Online at <https://doi.org/xxx/xxx>
-
+At time of submission, data are [available on Box](https://arizona.box.com/s/kjecv66pe88gtwdw9h20u0yvbw5thzmu). They will be moved to a repository at the time of publication.
 
 ## Data Sources
 
-**Climate data used as model inputs**
+### Climate data used as model inputs
 
-Abatzoglou, J.T., S.Z. Dobrowski, S.A. Parks, K.C. Hegewisch, 2018, Terraclimate, a high-resolution global dataset of monthly climate and climatic water balance from 1958-2015, Scientific Data,
+* **TERRACLIMATE** Abatzoglou, J.T., S.Z. Dobrowski, S.A. Parks, K.C. Hegewisch, 2018, Terraclimate, a high-resolution global dataset of monthly climate and climatic water balance from 1958-2015, Scientific Data
 
-**Urban and protected areas excluded from biomass predictions**
+### Urban and protected areas
 
-The following data was used to exclude present day 1) Urban Areas (Kelso and Patterson 2010; South 2017) and 2) Protected Areas (UNEP-WCMC and IUCN, 2021)
+The following data was used to exclude present day 1) Urban Areas (Kelso and Patterson 2010; South 2017) and 2) Protected Areas (UNEP-WCMC and IUCN, 2021) 
+from regional predictions of suitable land area and potential biomass:
 
-**Urban Areas**
 
-Andy South (2017). rnaturalearth: World Map Data from Natural Earth. 
+* **Natural Earth**
+  * Andy South (2017). rnaturalearth: World Map Data from Natural Earth. 
 R package version 0.1.0. https://CRAN.R-project.org/package=rnaturalearth
+  * Kelso, Nathaniel Vaughn, and Tom Patterson. "Introducing natural earth data-naturalearthdata.com." Geographia Technica 5.82-89 (2010): 25.
 
-Kelso, Nathaniel Vaughn, and Tom Patterson. "Introducing natural earth data-naturalearthdata.com." Geographia Technica 5.82-89 (2010): 25.
-
-**Protected Areas**
-
-World Database of Protected Areas
-
-* `analysis/data/raw_data/WDPD_WDOECM_Apr2021`
-* `analysis/data/derived_data/wdpa.gpkg`
-
-UNEP-WCMC and IUCN (2021), Protected Planet: The World Database on Protected Areas (WDPA) and World Database on Other Effective Area-based Conservation Measures (WD-OECM) [Online], April 2021, Cambridge, UK: UNEP-WCMC and IUCN. Available at: www.protectedplanet.net.
-
+* **Protected Areas** UNEP-WCMC and IUCN (2021), Protected Planet: The World Database on Protected Areas (WDPA) and World Database on Other Effective Area-based Conservation Measures (WD-OECM) [Online], April 2021, Cambridge, UK: UNEP-WCMC and IUCN. Available at: www.protectedplanet.net.
+  * For convenience the aggregated, OGC-compliant geopackage format of this database is provided in the file `derived_data/wdpa.gpkg`
 
 ## Software 
 
@@ -77,7 +69,6 @@ UNEP-WCMC and IUCN (2021), Protected Planet: The World Database on Protected Are
 
 ## Contents
 
-_Note: large files from the derived_data directory are [stored on Box prior to submission](https://arizona.box.com/s/kjecv66pe88gtwdw9h20u0yvbw5thzmu)_
 
 The **analysis** directory contains:
 
@@ -100,21 +91,21 @@ The **analysis** directory contains:
   - [analysis/figures](/analysis/figures): Plots and Panoply (plotting software) configuration files. 
     - contains all map figures generated using Panoply. 
     - `*.pcl` files provide information about Panoply software settings used to generate the figures. In addition, these files can regenerate the figures with the command `java -jar PanoplyCL.jar [filename].pcl` using a `PanoplyCL.jar` that is available from the Panoply software author [Dr. Robert Schmunk](https://science.gsfc.nasa.gov/sed/bio/robert.b.schmunk).
-    
-
 
 ## Model Description
 
-The model is described in detail in the text. 
-The equations below are provide for reference.
+The EPI model is implemented using NetCDF Operators in the file [analysis/03-compute.biomass.sh](analysis/03-compute.biomass.sh).
+The key equations of the model are provided below for reference; a full description is provided in Niechayev et al (2019) and the manuscript associated with this archive Davis et al (_submitted_).
+
+> Niechayev, N., Jones, A., Rosenthal, D., & Davis, S. (2019). A model of environmental limitations on production of Agave americana L. grown as a biofuel crop in semi-arid regions. Journal of Experimental Botany, 70, 6549-6559. 
 
 **light index $\alpha$:**
 
 $$
 \alpha=
 \left\{\begin{matrix}
-0,                                   & \textrm{for } I\lt 0.6252 \\ 
--7\times10^{-7}I^2+0.0016\;I-0.0001, & \textrm{for } I\gt 0.6252 
+0,                                   & \textrm{for } I< 0.6252 \\ 
+-7\times10^{-7}I^2+0.0016\;I-0.0001, & \textrm{for } I> 0.6252 
 \end{matrix}\right.
 $$
 
@@ -126,7 +117,7 @@ $$
 \beta=
 \left\{\begin{matrix}
 0,                                   & \textrm{for } P\leq 10.219 \\ 
-0.0279\;P-0.2851,                                   & \textrm{for } 10.219\lt P\lt 46.061 \\ 
+0.0279\;P-0.2851,                                   & \textrm{for } 10.219< P< 46.061 \\ 
 1, & \textrm{for } P\geq 46.061 
 \end{matrix}\right.
 $$
@@ -145,25 +136,34 @@ $$
 
 Where T is the average daily temperature for the month.
 
+monthly EPI:
 
 $$\textrm{EPI}_\textrm{month}=\alpha\times\beta\times\Gamma$$
+
+**Five year total EPI** is the sum of monthly EPIs multiplied by five:
+
 $$\textrm{EPI}_\textrm{5 years}=5\times\sum_{0}^{12}\textrm{EPI}_\textrm{month}$$
+
+**Predicted Biomass over a 5 year cropping cycle** uses the parameters from 
+
 $$\textrm{Biomass}=1.7607\times\textrm{EPI}-14.774$$
 
 ### Simulating Rock Mulch
 
+
 $$\beta_{\textrm{rock mulch}}=\beta * 1.83$$
+
+
 ### Simulating Irrigation
 
-Calculate monthly water demand: how much precipitation is required for $\beta\geq 1$?
+Calculate monthly water demand: 
 
-Given $\beta = 0.0279\times\textrm{P}-0.2851$
+Given $\beta = 0.0279\times\textrm{P}-0.2851$, find the values of $P$ where $\beta\geq 1$?
 
-$$1 = 0.0279\times\textrm{P}-0.2851$$
 
-$$\textrm{ppt}_{\beta=1}=\frac{1+0.2851}{0.0279}\simeq= 46.06093$$
+$$\textrm{P}_{\beta=1}=\frac{1+0.2851}{0.0279}\simeq= 46.06093$$
 
-- for any location where absmintemp > -10,
+
   - for each month if
     - $\alpha > 0$ AND
     - $\gamma > 0$ AND
@@ -171,8 +171,16 @@ $$\textrm{ppt}_{\beta=1}=\frac{1+0.2851}{0.0279}\simeq= 46.06093$$
   - calculate irrigation required = water demand $46.01  - P$
   - annual irrigation demand = $\sum_{jan}^{dec}46.01 - \textrm{P}$ calculate sum over all months
 
+### Simulating Freezing Mortality
+
+For any grid cell with absolute minimum annual temperature < -10, set biomass to 0. 
+
+
 ## Licenses
 
 * **Code :** [BSD 3-Clause](https://opensource.org/licenses/BSD-3-Clause)
 * **Data :** are 'public domain' [CC-0](http://creativecommons.org/publicdomain/zero/1.0/): attribution requested in reuse
+
+
+
 
