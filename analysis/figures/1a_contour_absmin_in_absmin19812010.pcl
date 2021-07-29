@@ -3,7 +3,7 @@
 // java -jar PanoplyCL.jar 1a_contour_absmin_in_absmin19812010.pcl
 
 // Open a dataset.
-var ncdata1 = panoply.openDataset ( "/C:/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/absmin19812010.nc" );
+var ncdata1 = panoply.openDataset ( "analysis/data/derived_data/absmin19812010.nc" );
 
 // Select a variable.
 var ncvar1 = ncdata1.getVariable ( "absmin" );
@@ -37,7 +37,7 @@ myplot.set ( "scale-label-size", 14.0 );
 
 myplot.set ( "colorbar-name", "CB_RdYlBu.cpt" );
 myplot.set ( "colorbar-invalids", "white" );
-myplot.set ( "colorbar-reverse", false );
+myplot.set ( "colorbar-reverse", true );
 myplot.set ( "colorbar-length", 60 );
 myplot.set ( "colorbar-border-weight", 100 );
 myplot.set ( "colorbar-outlier-side", "both" );
@@ -70,4 +70,4 @@ myplot.set ( "footnote-minmax-vis", true );
 myplot.set ( "footnote-minmax-format", "Same" );
 
 // Save plot image to disk.
-myplot.saveImage ( "PNG", "1a_contour_absmin_in_absmin19812010.png" );
+myplot.saveImage ( "PNG", "analysis/figures/1a_contour_absmin_in_absmin19812010.png" );
