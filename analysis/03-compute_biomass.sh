@@ -4,21 +4,6 @@ for climate in 19812010 4C ; do
 #for climate in AZ19812010 AZ4C; do
   echo "starting calculations for ${climate} climate"
 
-  # Compute PAR
-  ncap2 -O -s "par=5.6925*srad" TerraClimate${climate}.nc par${climate}.nc
-
-
-  # Compute min Tmin over year
-   ncwa -O -v tmin -y min -a time TerraClimate${climate}.nc mintmin${climate}.nc
-
-  # Compute absmin
-
-  ncks -A ../raw_data/coldestadj_tmin.nc mintmin${climate}.nc
-  ncap2 -O -s "absmin=tmin-adjustC" mintmin${climate}.nc absmin${climate}.nc
-
-  # add absmin tp
-  ncks -A --no_tmp_fl -v absmin absmin${climate}.nc par${climate}.nc
-
   # Compute coeficients with min/max
   ncap2 -O -s "
   alpha=-7e-07*par^2+0.0016*par-0.001;
