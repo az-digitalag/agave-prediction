@@ -1,12 +1,12 @@
 // BETA BETA BETA
 // Script parsed by PanoplyCL to create a plot. Usage:
-// java -jar PanoplyCL.jar 4d_biomassdiffirrig_in_biomassdiff.pcl
+// java -jar PanoplyCL.jar 3a_masked_biomass_in_masked_biomass.pcl
 
 // Open a dataset.
-var ncdata1 = panoply.openDataset ( "/C:/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/biomassdiff.nc" );
+var ncdata1 = panoply.openDataset ( "/mnt/c/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/masked_biomass.nc" );
 
 // Select a variable.
-var ncvar1 = ncdata1.getVariable ( "biomassdiffirrig" );
+var ncvar1 = ncdata1.getVariable ( "biomass" );
 
 // Create the plot.
 var myplot = panoply.createPlot ( "lonlat", ncvar1 );
@@ -21,32 +21,31 @@ myplot.set ( "color-background", "white" );
 myplot.set ( "labels-font", "SansSerif" );
 myplot.set ( "labels-super10", false );
 
-myplot.set ( "title-text", "Change in Biomass Rainfed, +4C Climate" );
+myplot.set ( "title-text", "Annual Biomass Production Rainfed, Current Climate" );
 
 myplot.set ( "interpolate", false );
 myplot.set ( "scale-method", "SCALAR" );
 myplot.set ( "scale-exponent", 0 );
-myplot.set ( "scale-min", -15.0 );
-myplot.set ( "scale-max", 15.0 );
-myplot.set ( "scale-div-major", 8 );
+myplot.set ( "scale-min", 0.0 );
+myplot.set ( "scale-max", 16.26796 );
+myplot.set ( "scale-div-major", 13 );
 myplot.set ( "scale-div-minor", 2 );
 myplot.set ( "scale-tick-size", 11.0 );
 myplot.set ( "scale-tick-format", "%.0f" );
-myplot.set ( "scale-label-custom", false );
+myplot.set ( "scale-label-custom", true );
+myplot.set ( "scale-label-text", "Biomass (Mg ha-1 y-1)" );
 myplot.set ( "scale-label-size", 14.0 );
 
-myplot.set ( "colorbar-name", "ViBlGrWhYeOrRe.rgb" );
+myplot.set ( "colorbar-name", "DEM_screen.cpt" );
 myplot.set ( "colorbar-invalids", "white" );
 myplot.set ( "colorbar-reverse", true );
 myplot.set ( "colorbar-length", 60 );
 myplot.set ( "colorbar-border-weight", 100 );
 myplot.set ( "colorbar-outlier-side", "NONE" );
 
-myplot.set ( "proj-name", "Equirectangular Regional" );
-myplot.set ( "proj-lon0", -95.0 );
-myplot.set ( "proj-lat0", 40.0 );
-myplot.set ( "proj-xparam-1", 78.32443735993672 );
-myplot.set ( "proj-xparam-2", 30.0 );
+myplot.set ( "proj-name", "Robinson" );
+myplot.set ( "proj-lon0", 0.0 );
+myplot.set ( "proj-lat0", 30.0 );
 myplot.set ( "border-weight", 50 );
 
 myplot.set ( "proj-shading-vis", false );
@@ -65,4 +64,4 @@ myplot.set ( "footnote-minmax-vis", true );
 myplot.set ( "footnote-minmax-format", "Same" );
 
 // Save plot image to disk.
-myplot.saveImage ( "PNG", "4d_biomassdiffirrig_in_biomassdiff.png" );
+myplot.saveImage ( "PNG", "3a_masked_biomass_in_masked_biomass.png" );

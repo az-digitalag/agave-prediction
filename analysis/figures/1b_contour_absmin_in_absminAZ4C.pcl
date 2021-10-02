@@ -3,7 +3,7 @@
 // java -jar PanoplyCL.jar 1b_contour_absmin_in_absminAZ4C.pcl
 
 // Open a dataset.
-var ncdata1 = panoply.openDataset ( "/C:/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/absminAZ4C.nc" );
+var ncdata1 = panoply.openDataset ( "/mnt/c/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/absminAZ4C.nc" );
 
 // Select a variable.
 var ncvar1 = ncdata1.getVariable ( "absmin" );

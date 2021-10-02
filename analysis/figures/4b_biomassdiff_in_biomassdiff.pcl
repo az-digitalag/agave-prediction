@@ -1,6 +1,6 @@
 // BETA BETA BETA
 // Script parsed by PanoplyCL to create a plot. Usage:
-// java -jar PanoplyCL.jar 4B_biomassdiff_in_biomassdiff.pcl
+// java -jar PanoplyCL.jar 4b_biomassdiff_in_biomassdiff.pcl
 
 // Open a dataset.
 var ncdata1 = panoply.openDataset ( "/C:/Users/David/Documents/dev/AgavePrediction/analysis/data/derived_data/biomassdiff.nc" );
@@ -26,9 +26,9 @@ myplot.set ( "title-text", "Change in Biomass Rainfed, +4C Climate" );
 myplot.set ( "interpolate", false );
 myplot.set ( "scale-method", "SCALAR" );
 myplot.set ( "scale-exponent", 0 );
-myplot.set ( "scale-min", -14.0 );
-myplot.set ( "scale-max", 14.0 );
-myplot.set ( "scale-div-major", 7 );
+myplot.set ( "scale-min", -15.0 );
+myplot.set ( "scale-max", 15.0 );
+myplot.set ( "scale-div-major", 8 );
 myplot.set ( "scale-div-minor", 2 );
 myplot.set ( "scale-tick-size", 11.0 );
 myplot.set ( "scale-tick-format", "%.0f" );
@@ -45,7 +45,7 @@ myplot.set ( "colorbar-outlier-side", "NONE" );
 myplot.set ( "proj-name", "Equirectangular Regional" );
 myplot.set ( "proj-lon0", -95.0 );
 myplot.set ( "proj-lat0", 40.0 );
-myplot.set ( "proj-xparam-1", 78.32443735993672 );
+myplot.set ( "proj-xparam-1", 78.32443736 );
 myplot.set ( "proj-xparam-2", 30.0 );
 myplot.set ( "border-weight", 50 );
 
