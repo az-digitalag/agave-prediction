@@ -7,9 +7,9 @@ library(ggspatial)
 
 # https://datacarpentry.org/r-raster-vector-geospatial/11-vector-raster-integration/index.html
 
-not_suitable_polygons <- st_read('analysis/data/derived_data/not_suitable.gpkg')
+not_suitable_polygons <- st_read('data/derived_data/not_suitable.gpkg')
 
-all_biomass_file <-'analysis/data/derived_data/allbiomass.nc'
+all_biomass_file <-'data/derived_data/allbiomass.nc'
 
 
 vars <- c('biomass',
@@ -32,7 +32,7 @@ mymask <- function(raster){
   raster[raster == 0] <- NA
   r <- mask(raster, not_suitable_raster,
             inverse = TRUE,
-            filename = paste0('analysis/data/derived_data/masked_',varname,'.nc'),
+            filename = paste0('data/derived_data/masked_',varname,'.nc'),
             format = 'CDF',
             overwrite = TRUE)
 
@@ -71,7 +71,7 @@ area_biomass_summary <- lapply(
   })
 
 readr::write_csv(cbind(scenario = vars, dplyr::bind_rows(area_biomass_summary)),
-                 file = 'analysis/data/derived_data/area_biomass_summary.csv')
+                 file = 'data/derived_data/area_biomass_summary.csv')
 
 masked_dfs <- lapply(masked_rasters, function(x){
   x_small <- aggregate(x, 4)

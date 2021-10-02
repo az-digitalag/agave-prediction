@@ -5,6 +5,19 @@ date: "5/13/2021"
 output: html_document
 ---
 
+
+
+### Generate figures using Panoply
+
+
+```{sh}
+for f in `ls analysis/figures/*pcl`; do
+  java -jar PanoplyCL/PanoplyCL.jar $f
+done
+```
+
+### Analysis and figures in R
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE)
 library(dplyr)
@@ -19,45 +32,7 @@ library(ggmap)
 library(rnaturalearth)
 ```
 
-## Masking
-
-```{r masks}
-
-# https://datacarpentry.org/r-raster-vector-geospatial/11-vector-raster-integration/index.html
-
-not_suitable_polygons <- st_read('data/derived_data/not_suitable.gpkg')
-
-all_biomass_file <-'data/derived_data/allbiomass.nc'
-
-
-vars <- c('biomass',
-          'biomass4C',
-          'biomass_irrig',
-          'biomass4C_irrig',
-          'biomass_rockmulch',
-          'biomass4C_rockmulch')
-
-
-
-rasters <- lapply(vars, function(x) raster(all_biomass_file, varname = x))
-
-## convert polygons to raster  r <- mask(merge(r, mask.raster), mask.raster, filename = label, format = "GTiff",overwrite = T)
-
-not_suitable_raster <- fasterize(not_suitable_polygons, rasters[[1]])
-
-mymask <- function(raster){
-  varname <- names(raster)
-  raster[raster == 0] <- NA
-  r <- mask(raster, not_suitable_raster,
-            inverse = TRUE,
-            filename = paste0('masked_',varname,'.nc'),
-            format = 'CDF',
-            overwrite = TRUE)
-
-}
-
-masked_rasters <- lapply(rasters, mymask)
-```
+## calculate total area and biomass
 
 ```{r total_biomass}
 total_biomass <- lapply(masked_rasters, function(x) cellStats(x, 'sum')  / 1e6)
@@ -77,8 +52,8 @@ names(total_area) <- vars
 
 results_table <- bind_cols(bind_rows(total_area), biomass = unlist(total_biomass)) %>% 
   as_tibble() %>% 
-  transmute(climate = rep(c('current', '4C'), times = 3), 
-         scenario = rep(c('rainfed', 'irrigated', 'rock mulch'), each = 2),
+  transmute(climate = rep(c('current', '4C'), times = 4), 
+         scenario = rep(c('rainfed', 'irrigated', 'rock mulch', 'rock mulch arid'), each = 2),
          `biomass` = biomass,
          area = growing_area,
          `area > 3 Mg/ha` = growing_area_gt3,

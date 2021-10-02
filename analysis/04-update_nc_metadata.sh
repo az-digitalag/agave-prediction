@@ -1,7 +1,7 @@
 # http://nco.sourceforge.net/nco.html#ncatted-netCDF-Attribute-Editor
 
 ## Files with coefficients: coefs19812010.nc and coefs4C.nc
-for climate in 19812010 4C ; do
+for climate in 19812010 2C 4C ; do
   ncatted \
     -a description,alpha,m,c,"alpha (light limitation) coefficient from environmental productivity index model" \
     -a description,beta,m,c,"beta (water limitation) coefficient from environmental productivity index model" \
@@ -29,11 +29,11 @@ for climate in 19812010 4C ; do
   ## delete extra variables
   ncks -O -x -v par,ppt,srad,tmin coefs${climate}.nc coefs${climate}.nc
 
-  # generate average coefs
-  ncap2 -O  -v -s '
-  alpha_mean=alpha.avg($time);
-  beta_mean=beta.avg($time);
-  gamma_mean=gamma.avg($time)' coefs${climate}.nc mean_coefs${climate}.nc
+  # # generate average coefs
+  # ncap2 -O  -v -s '
+  # alpha_mean=alpha.avg($time);
+  # beta_mean=beta.avg($time);
+  # gamma_mean=gamma.avg($time)' coefs${climate}.nc mean_coefs${climate}.nc
 done
 
 
