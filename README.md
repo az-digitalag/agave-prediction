@@ -7,61 +7,148 @@ for Agave americana with future climate
 This repository contains the code, code documentation, and data
 description for our paper:
 
-> Sarah C. Davis, John T. Abatzoglou, David S. LeBauer, (2021).
-> “Expanded potential growing region and yield increase for Agave
-> americana with future climate”. *Submitted to Agronomy*
-
-At time of submission, data are [available on
-Box](https://arizona.box.com/s/kjecv66pe88gtwdw9h20u0yvbw5thzmu). They
-will be moved to a repository at the time of publication.
+Davis, S.C.; Abatzoglou, J.T.; LeBauer, D.S. Expanded Potential Growing
+Region and Yield Increase for Agave americana with Future Climate.
+Agronomy 2021, 11, x. <https://doi.org/10.3390/xxxxx>
 
 ## Contents
 
 The **analysis/** directory contains code and data used in this paper:
 
--   **Scripts**
-    -   `01-download_climate.R` downloads the TERRA-Climate data to the
-        `raw_data` directory.
-    -   `01.1-combine_masks.R` combines urban and protected area
-        polygons and generates polygons stored in
-        `/data/derived_data/not_suitable.gpkg`
-    -   `0.2-append_terraclimate.sh` combines TERRA-CLIMATE data into a
-        single file for each scenario in the derived\_data folder.
-        `derived_data` named `TerraClimate4C.nc` and
-        `TerraClimate19812010.nc`
-    -   `03-compute.biomass.sh` implements the model under different
-        climate scenarios with rainfed, irrigation, and rock mulch
-        scenarios (described below)
-    -   `04-update_nc_metadata.sh` corrects metadata in output netcdf
-        files
--   **Data**
+#### Analysis Code
+
+    - `01-download_climate.R` downloads the TERRA-Climate data to the `raw_data` directory.
+    - `01.1-combine_masks.R` combines urban and protected area polygons and generates polygons stored in `/data/derived_data/not_suitable.gpkg`
+    - `0.2-append_terraclimate.sh` combines TERRA-CLIMATE data into a single file for each scenario in the derived_data folder. `derived_data` named `TerraClimate4C.nc` and `TerraClimate19812010.nc`
+    - `03-compute.biomass.sh` implements the model under different climate scenarios with rainfed, irrigation, and rock mulch scenarios (described below)
+    - `04-update_nc_metadata.sh` corrects metadata in output netcdf files
+
+#### Input Data
+
 -   [/analysis/data/raw\_data](/analysis/data/raw_data):
     -   TERRACLIMATE files must be downloaded to this folder using the
         `01-download_climate.R` script
     -   WPDA Shapefiles can be downloaded from www.protectedplanet.net
+
+#### Output Data
+
 -   [/analysis/data/derived\_data](/analysis/data/derived_data): Outputs
-    available - `coefs19812010.nc` calculated values of
-    ![\\alpha](https://latex.codecogs.com/png.latex?%5Calpha "\alpha"),
-    ![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\beta"), and
-    ![\\Gamma](https://latex.codecogs.com/png.latex?%5CGamma "\Gamma")
-    values for each grid cell under 1981-2010 climate normals for three
-    water availability scenarios - `coefs4C.nc` same as above but for
-    ![+4^\\circ C](https://latex.codecogs.com/png.latex?%2B4%5E%5Ccirc%20C "+4^\circ C")
-    warming - `allbiomass.nc` predicted annual biomass increments for
-    *Agave americana* under all climates and scenarios -
-    `biomassdiff.nc` differences between current and future biomass -
-    `not_suitable.gpkg` polygons combining land classified as unsuitable
-    for growing that is either protected (UNEP-WCMC and IUCN 2021) or
-    urbanized (Kelso and Patterson 2010)
+    available
+    -   `coefs19812010.nc` calculated values of
+        ![\\alpha](https://latex.codecogs.com/png.latex?%5Calpha "\alpha"),
+        ![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\beta"),
+        and
+        ![\\Gamma](https://latex.codecogs.com/png.latex?%5CGamma "\Gamma")
+        values for each grid cell under 1981-2010 climate normals for
+        three water availability scenarios
+    -   `coefs4C.nc` same as above but for
+        ![+4^\\circ C](https://latex.codecogs.com/png.latex?%2B4%5E%5Ccirc%20C "+4^\circ C")
+        warming
+    -   `allbiomass.nc` predicted annual biomass increments for *Agave
+        americana* under all climates and scenarios
+    -   `biomassdiff.nc` differences between current and future biomass
+    -   `not_suitable.gpkg` polygons combining land classified as
+        unsuitable for growing that is either protected (UNEP-WCMC and
+        IUCN 2021) or urbanized (Kelso and Patterson 2010)
 -   [analysis/figures](/analysis/figures): Plots and Panoply (plotting
-    software) configuration files.
-    -   contains all map figures generated using Panoply.
+    software) configuration files. - contains all map figures generated
+    using Panoply.
     -   `*.pcl` files provide information about Panoply software
         settings used to generate the figures. In addition, these files
         can regenerate the figures with the command
         `java -jar PanoplyCL.jar [filename].pcl` using a `PanoplyCL.jar`
         that is available from the Panoply software author [Dr. Robert
         Schmunk](https://science.gsfc.nasa.gov/sed/bio/robert.b.schmunk).
+
+## Data Sources
+
+Analyses start with these datasets in the `analysis/data/raw_data/`
+folder.
+
+### Climate data used as model inputs
+
+**TERRACLIMATE** data from Abatzoglou et al (2018). Downloaded from:
+<http://www.climatologylab.org/terraclimate.html>
+
+These are not archived.
+
+Monthly mean values of: - precipitation (ppt) - minimum temperature
+(tmin) - solar radiation (srad)
+
+On a 1km grid for 1980-2010, +2C and +4C warming climates.
+
+Files: (4,7 GB total) - `TerraClimate19812010_ppt.nc` -
+`TerraClimate19812010_tmin.nc` - `TerraClimate2C_tmin.nc` -
+`TerraClimate4C_tmin.nc` - `TerraClimate2C_ppt.nc` -
+`TerraClimate4C_ppt.nc` - `TerraClimate19812010_srad.nc` -
+`coldest_adj_mo_climo_adj.nc` - adjustC: - `coldest_month_climo_adj.nc`
+- cadj: perturbation from true coldest month to climatological coldest
+month
+
+Abatzoglou, J.T., S.Z. Dobrowski, S.A. Parks, K.C. Hegewisch, 2018,
+Terraclimate, a high-resolution global dataset of monthly climate and
+climatic water balance from 1958-2015, Scientific Data
+
+### Urban and protected areas
+
+The following data was used to exclude present day 1) Urban Areas (Kelso
+and Patterson 2010; South 2017) and 2) Protected Areas (UNEP-WCMC and
+IUCN, 2021) from regional predictions of suitable land area and
+potential biomass:
+
+-   **Natural Earth**
+    -   Downloaded with the `rnaturalearth` R package. Andy South
+        (2017). rnaturalearth: World Map Data from Natural Earth. R
+        package version 0.1.0.
+        <https://CRAN.R-project.org/package=rnaturalearth>
+    -   Kelso, Nathaniel Vaughn, and Tom Patterson. “Introducing natural
+        earth data-naturalearthdata.com.” Geographia Technica 5.82-89
+        (2010): 25.
+-   **Protected Areas** UNEP-WCMC and IUCN (2021), Protected Planet: The
+    World Database on Protected Areas (WDPA) and World Database on Other
+    Effective Area-based Conservation Measures (WD-OECM) \[Online\],
+    April 2021, Cambridge, UK: UNEP-WCMC and IUCN. Available at:
+    www.protectedplanet.net.
+    -   For convenience the aggregated, OGC-compliant geopackage format
+        of this database is provided in the file
+        `derived_data/wdpa.gpkg`
+
+Files: - `WDPA_WDOECM_Apr2021.zip` 3.5 GB - Contains shape files that
+are combined and turned into a geodatabase in the script
+`01.1-combine_masks.R`. - Needs to be unzipped into `raw_data/` folder -
+As of Oct 2021, these are provided directly as a geodatabase file
+
+UNEP-WCMC and IUCN (2021), Protected Planet: The World Database on
+Protected Areas (WDPA) \[Online\], October 2021, Cambridge, UK:
+UNEP-WCMC and IUCN. Available at: www.protectedplanet.net.
+
+## Software Used
+
+**NCO: NetCDF Operators (Zender 2014)** Zender, C. S. (2014), netCDF
+Operator (NCO) User Guide, Version 4.4.3, <http://nco.sf.net/nco.pdf>.
+**R** R Core Team (2018). R: A language and environment for statistical
+computing. R Foundation for Statistical Computing, Vienna, Austria. URL
+<https://www.R-project.org/>.
+
+**fasterize** Noam Ross (2020). fasterize: Fast Polygon to Raster
+Conversion. R package version 1.0.3.
+<https://CRAN.R-project.org/package=fasterize>
+
+**rnaturalearth** Andy South (2017). rnaturalearth: World Map Data from
+Natural Earth. R package version 0.1.0.
+<https://CRAN.R-project.org/package=rnaturalearth>
+
+**sf** Pebesma, E., 2018. Simple Features for R: Standardized Support
+for Spatial Vector Data. The R Journal 10 (1), 439-446,
+<https://doi.org/10.32614/RJ-2018-009>
+
+**exactextractr** Daniel Baston (2021). exactextractr: Fast Extraction
+from Raster Datasets using Polygons. R package version 0.6.0.
+<https://CRAN.R-project.org/package=exactextractr>
+
+**Panoply** PanoplyCL v 4.12.8 b0071 downloaded from
+<https://www.giss.nasa.gov/tools/panoply/download/beta1f/> can be used
+to recreate figures, see `.pcl` files in figures directory
 
 ## Analysis Steps
 
@@ -85,55 +172,55 @@ dataset can not be downloaded.
 
 #### 3. Generate mask of protected and urban areas
 
-NB at time of publication, this step does not run because of a bug in
-the rnaturalearth API. See
-<https://github.com/ropensci/rnaturalearth/issues/29>
+Combine WPDA with rnaturalearth Urban areas, generate polygons as
+‘masks.gpkg’
 
 ``` r
 Rscript --vanilla ./01.1-combine_masks.R
 ```
 
-#### 4. Append TERRACLIMATE
+NB at time of publication, this step does not run because of a bug in
+the rnaturalearth API. See
+<https://github.com/ropensci/rnaturalearth/issues/29>
+
+#### 4. Append TERRACLIMATE and compute derived variables,
+
+The script
 
 ``` sh
 ./02-append_terraclimate.sh
 ```
 
-#### 5.
+##### Calculate PAR
 
-## Calculate Derived Climate Variables
-
-#### Calculate PAR
-
-2.875 \* 110 / 1000 \* 18
+2 \* srad \* 110 / 1000 \* 18
 
 ![
-\\textrm{PAR} = \\textrm{SRAD} \* 5.6925
-](https://latex.codecogs.com/png.latex?%0A%5Ctextrm%7BPAR%7D%20%3D%20%5Ctextrm%7BSRAD%7D%20%2A%205.6925%0A "
-\textrm{PAR} = \textrm{SRAD} * 5.6925
+\\textrm{PAR} = 2 \\times \\textrm{SRAD} \\frac{W}{m^{-2}}\\times  110\\frac{\\textrm{lux}}{W}\\times 10^{-3}\\frac{\\textrm{klux}}{\\textrm{lux}}\\times 18\\frac{\\mu\\textrm{mol}/\\textrm{m}^{2}\\textrm{s}^{2}}{\\textrm{klux}}
+](https://latex.codecogs.com/png.latex?%0A%5Ctextrm%7BPAR%7D%20%3D%202%20%5Ctimes%20%5Ctextrm%7BSRAD%7D%20%5Cfrac%7BW%7D%7Bm%5E%7B-2%7D%7D%5Ctimes%20%20110%5Cfrac%7B%5Ctextrm%7Blux%7D%7D%7BW%7D%5Ctimes%2010%5E%7B-3%7D%5Cfrac%7B%5Ctextrm%7Bklux%7D%7D%7B%5Ctextrm%7Blux%7D%7D%5Ctimes%2018%5Cfrac%7B%5Cmu%5Ctextrm%7Bmol%7D%2F%5Ctextrm%7Bm%7D%5E%7B2%7D%5Ctextrm%7Bs%7D%5E%7B2%7D%7D%7B%5Ctextrm%7Bklux%7D%7D%0A "
+\textrm{PAR} = 2 \times \textrm{SRAD} \frac{W}{m^{-2}}\times  110\frac{\textrm{lux}}{W}\times 10^{-3}\frac{\textrm{klux}}{\textrm{lux}}\times 18\frac{\mu\textrm{mol}/\textrm{m}^{2}\textrm{s}^{2}}{\textrm{klux}}
 ")
 
-- srad: Shortwave Radiation - par: Photosynthetically active radiation
+1e-3 } }
 
--   the Agave model takes PAR as an input in units of (umol photons / m2
-    / s)
--   TERRACLIMATE provides shortwave radiation srad (W/m2)
+-   SRAD: Mean daily shortwave radiation (W/m2) from TERRACLIMATE
 
-PAR in these units is often called “photoynthetic photo flux density”
-(PPFD)
+-   PAR: Photosynthetically active radiation in units of (umol photons /
+    m2 / s)
 
--   [Campbell and
-    Norman (1998)](https://link.springer.com/book/10.1007/978-1-4612-1626-1)
-    say 2.35e5 J / mol is the energy content of solar radiation in the
-    PAR waveband i.e. you can convert PPFD (umol/m2/s) to PAR (W/m2)
-    using the PAR = PPFD \* 2.35e5
--   PAR is defined as solar radiation with wavelengths in the range
-    400-700 nm
--   PAR has been empirically measured to contain on average 45% of the
-    energy of shortwave radiation defined as 300-2000nm [(Britton and
-    Dodd 1976)](https://www.sciencedirect.com/science/article/pii/0002157176900807)
+-   110 is the average global annual luminous efficacy value of 110
+    lumens per W (Littlefair, 1985) in order to convert to lux (lumens
+    per square meter)
 
-#### Calculating Absolute Minimum Annual Temperature
+-   lux converted into the average daily PAR using the relationship 1
+    klux = 18 µmol photons m-2 s-1 of daylight.
+
+-   Multiply by 10<sup>-3</sup> to convert from lux to klux.
+
+-   Multiply x2 to convert from mean PAR integrated over 24 hours to the
+    flux over a 12 hours of daylight on average
+
+##### Calculating Absolute Minimum Annual Temperature
 
 ![
 \\textrm{absmin} = \\textrm{tmin} - \\textrm{cadj} -\\textrm{adjustC}
@@ -141,25 +228,25 @@ PAR in these units is often called “photoynthetic photo flux density”
 \textrm{absmin} = \textrm{tmin} - \textrm{cadj} -\textrm{adjustC}
 ")
 
--   absmin: absolute minimum annual temperature, the daily coldest
+-   `absmin`: absolute minimum annual temperature, the daily coldest
     minimum temperature
--   tmin: average minimum temperature of the coldest month,
+-   `tmin`: average minimum temperature of the coldest month,
     climatological
--   adjustC: is from ERA5 and represents the difference in
+-   `adjustC`: is from ERA5 and represents the difference in
     climatological coldest night of the year and daily average lowest
     temperature of a month.
--   cadj: perturbation from true coldest month to climatological coldest
-    month
+-   `cadj`: perturbation from true coldest month to climatological
+    coldest month
 
-cadj is a minor adjustment to reflect the fact that ERA5 calculations
+`cadj` is a minor adjustment to reflect the fact that ERA5 calculations
 did these calculations dynamically (coldest Tmin in a year minus Tmin of
-the coldest month) and you have been using coldest Tmin of climatology.
-The former can allow for the fact that in some years December might be
-the coldest, in others January. The climatology will tend to have a
-higher temperature of the coldest month than if you calculated these
+the coldest month) as opposed to using coldest Tmin of climatology. The
+former allows for the fact that in some years December might be the
+coldest, in others January. The climatology will tend to have a higher
+temperature of the coldest month than if these are calculated
 independently.
 
-## Model Implementation
+#### 6. Model Implementation
 
 The EPI model is implemented using NetCDF Operators in the file
 [analysis/03-compute.biomass.sh](analysis/03-compute.biomass.sh). The
@@ -246,11 +333,11 @@ from
 
 ![\\textrm{Biomass}=1.7607\\times\\textrm{EPI}-14.774](https://latex.codecogs.com/png.latex?%5Ctextrm%7BBiomass%7D%3D1.7607%5Ctimes%5Ctextrm%7BEPI%7D-14.774 "\textrm{Biomass}=1.7607\times\textrm{EPI}-14.774")
 
-### Simulating Rock Mulch
+**Simulating Rock Mulch**
 
 ![\\beta\_{\\textrm{rock mulch}}=\\beta \* 1.83](https://latex.codecogs.com/png.latex?%5Cbeta_%7B%5Ctextrm%7Brock%20mulch%7D%7D%3D%5Cbeta%20%2A%201.83 "\beta_{\textrm{rock mulch}}=\beta * 1.83")
 
-### Simulating Irrigation
+**Simulating Irrigation**
 
 Calculate monthly water demand:
 
@@ -274,99 +361,10 @@ where
     ![\\sum\_{jan}^{dec}46.01 - \\textrm{P}](https://latex.codecogs.com/png.latex?%5Csum_%7Bjan%7D%5E%7Bdec%7D46.01%20-%20%5Ctextrm%7BP%7D "\sum_{jan}^{dec}46.01 - \textrm{P}")
     calculate sum over all months
 
-### Simulating Freezing Mortality
+**Simulating Freezing Mortality**
 
 For any grid cell with absolute minimum annual temperature &lt; -10, set
 biomass to 0.
-
-## Data Sources
-
-Analyses start with these datasets in the `analysis/data/raw_data/`
-folder.
-
-### Climate data used as model inputs
-
-**TERRACLIMATE** data from Abatzoglou et al (2018).
-
-Monthly mean values of: - precipitation (ppt) - minimum temperature
-(tmin) - solar radiation (srad)
-
-On a 1km grid for 1980-2010, +2C and +4C warming climates.
-
-Files: (4,7 GB total) - `TerraClimate19812010_ppt.nc` -
-`TerraClimate19812010_tmin.nc` - `TerraClimate2C_tmin.nc` -
-`TerraClimate4C_tmin.nc` - `TerraClimate2C_ppt.nc` -
-`TerraClimate4C_ppt.nc` - `TerraClimate19812010_srad.nc` -
-`coldest_adj_mo_climo_adj.nc` - adjustC: - `coldest_month_climo_adj.nc`
-- cadj: perturbation from true coldest month to climatological coldest
-month
-
-Downloaded from: <http://www.climatologylab.org/terraclimate.html>
-
-Abatzoglou, J.T., S.Z. Dobrowski, S.A. Parks, K.C. Hegewisch, 2018,
-Terraclimate, a high-resolution global dataset of monthly climate and
-climatic water balance from 1958-2015, Scientific Data
-
-### Urban and protected areas
-
-The following data was used to exclude present day 1) Urban Areas (Kelso
-and Patterson 2010; South 2017) and 2) Protected Areas (UNEP-WCMC and
-IUCN, 2021) from regional predictions of suitable land area and
-potential biomass:
-
--   **Natural Earth**
-    -   Downloaded with the `rnaturalearth` R package. Andy South
-        (2017). rnaturalearth: World Map Data from Natural Earth. R
-        package version 0.1.0.
-        <https://CRAN.R-project.org/package=rnaturalearth>
-    -   Kelso, Nathaniel Vaughn, and Tom Patterson. “Introducing natural
-        earth data-naturalearthdata.com.” Geographia Technica 5.82-89
-        (2010): 25.
--   **Protected Areas** UNEP-WCMC and IUCN (2021), Protected Planet: The
-    World Database on Protected Areas (WDPA) and World Database on Other
-    Effective Area-based Conservation Measures (WD-OECM) \[Online\],
-    April 2021, Cambridge, UK: UNEP-WCMC and IUCN. Available at:
-    www.protectedplanet.net.
-    -   For convenience the aggregated, OGC-compliant geopackage format
-        of this database is provided in the file
-        `derived_data/wdpa.gpkg`
-
-Files: - `WDPA_WDOECM_Apr2021.zip` 3.5 GB - Contains shape files that
-are combined and turned into a geodatabase in the script
-`01.1-combine_masks.R`. - Needs to be unzipped into `raw_data/` folder -
-As of Oct 2021, these are provided directly as a geodatabase file
-
-UNEP-WCMC and IUCN (2021), Protected Planet: The World Database on
-Protected Areas (WDPA) \[Online\], October 2021, Cambridge, UK:
-UNEP-WCMC and IUCN. Available at: www.protectedplanet.net.
-
-## Software Used
-
-**NCO: NetCDF Operators (Zender 2014)** Zender, C. S. (2014), netCDF
-Operator (NCO) User Guide, Version 4.4.3, <http://nco.sf.net/nco.pdf>.
-**R** R Core Team (2018). R: A language and environment for statistical
-computing. R Foundation for Statistical Computing, Vienna, Austria. URL
-<https://www.R-project.org/>.
-
-**fasterize** Noam Ross (2020). fasterize: Fast Polygon to Raster
-Conversion. R package version 1.0.3.
-<https://CRAN.R-project.org/package=fasterize>
-
-**rnaturalearth** Andy South (2017). rnaturalearth: World Map Data from
-Natural Earth. R package version 0.1.0.
-<https://CRAN.R-project.org/package=rnaturalearth>
-
-**sf** Pebesma, E., 2018. Simple Features for R: Standardized Support
-for Spatial Vector Data. The R Journal 10 (1), 439-446,
-<https://doi.org/10.32614/RJ-2018-009>
-
-**exactextractr** Daniel Baston (2021). exactextractr: Fast Extraction
-from Raster Datasets using Polygons. R package version 0.6.0.
-<https://CRAN.R-project.org/package=exactextractr>
-
-**Panoply** PanoplyCL v 4.12.8 b0071 downloaded from
-<https://www.giss.nasa.gov/tools/panoply/download/beta1f/> can be used
-to recreate figures, see `.pcl` files in figures directory
 
 ## Licenses
 
