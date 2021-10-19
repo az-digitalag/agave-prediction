@@ -1,12 +1,12 @@
 ---
-title: "Data and Code from: Expanded potential growing region and yield increase for Agave americana with future climate
+title: "Data and Code from: Expanded potential growing region and yield increase for Agave americana with future climate"
 output:
   github_document:
     pandoc_args: --webtex
 ---
 
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval=FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -29,182 +29,28 @@ At time of submission, data are [available on Box](https://arizona.box.com/s/kje
 
 The **analysis/** directory contains code and data used in this paper:
 
-  - **Scripts**
+#### Analysis Code
     - `01-download_climate.R` downloads the TERRA-Climate data to the `raw_data` directory.
     - `01.1-combine_masks.R` combines urban and protected area polygons and generates polygons stored in `/data/derived_data/not_suitable.gpkg`
     - `0.2-append_terraclimate.sh` combines TERRA-CLIMATE data into a single file for each scenario in the derived_data folder. `derived_data` named `TerraClimate4C.nc` and `TerraClimate19812010.nc`
     - `03-compute.biomass.sh` implements the model under different climate scenarios with rainfed, irrigation, and rock mulch scenarios (described below)
     - `04-update_nc_metadata.sh` corrects metadata in output netcdf files
-  - **Data**
-  - [/analysis/data/raw_data](/analysis/data/raw_data): 
-    - TERRACLIMATE files must be downloaded to this folder using the `01-download_climate.R` script
-    - WPDA Shapefiles can be downloaded from www.protectedplanet.net
-  - [/analysis/data/derived_data](/analysis/data/derived_data): Outputs available
-        - `coefs19812010.nc` calculated values of $\alpha$, $\beta$, and $\Gamma$ values for each grid cell under 1981-2010 climate normals for three water availability scenarios 
-        - `coefs4C.nc` same as above but for $+4^\circ C$ warming
-        - `allbiomass.nc` predicted annual biomass increments for _Agave americana_ under all climates and scenarios
-        - `biomassdiff.nc` differences between current and future biomass
-        - `not_suitable.gpkg` polygons combining land classified as unsuitable for growing that is either protected (UNEP-WCMC and IUCN 2021) or urbanized (Kelso and Patterson 2010)
-  - [analysis/figures](/analysis/figures): Plots and Panoply (plotting software) configuration files. 
-    - contains all map figures generated using Panoply. 
-    - `*.pcl` files provide information about Panoply software settings used to generate the figures. In addition, these files can regenerate the figures with the command `java -jar PanoplyCL.jar [filename].pcl` using a `PanoplyCL.jar` that is available from the Panoply software author [Dr. Robert Schmunk](https://science.gsfc.nasa.gov/sed/bio/robert.b.schmunk).
 
+#### Input Data
 
-## Analysis Steps
+- [/analysis/data/raw_data](/analysis/data/raw_data): 
+  - TERRACLIMATE files must be downloaded to this folder using the `01-download_climate.R` script
+  - WPDA Shapefiles can be downloaded from www.protectedplanet.net
 
-
-#### 1. Download TERRACLIMATE
-
-```sh
-# ~ 1h @10Mbps
-cd analysis
-Rscript --vanilla ./01-download_climate.R 
-```
-
-#### 2. Download WPDA Protected Areas
-
-Per the [WPDA Data license](https://www.unep-wcmc.org/policies/wdpa-data-licence) this dataset can not be downloaded. 
-
-1. Go to https://www.protectedplanet.net/en/thematic-areas/wdpa
-2. Download `WPDA_WDOECM_Apr2021_Public_all_shp.zip` 
-3. Unzip to `raw_data/WDPA_WDOECM_Apr2021/`
-
-#### 3. Generate mask of protected and urban areas
-
-NB at time of publication, this step does not run because of a bug in the rnaturalearth API. See https://github.com/ropensci/rnaturalearth/issues/29 
-
-```r
-Rscript --vanilla ./01.1-combine_masks.R
-
-```
-
-#### 4. Append TERRACLIMATE
-
-```sh
-./02-append_terraclimate.sh
-```
-
-#### 5. 
-
-
-## Calculate Derived Climate Variables
-
-#### Calculate PAR
-
-2.875 * 110 / 1000 * 18
-
-$$
-\textrm{PAR} = \textrm{SRAD} * 5.6925
-$$
-- srad: Shortwave Radiation
-- par: Photosynthetically active radiation
-
-- the Agave model takes PAR as an input in units of (umol photons / m2 / s)
-- TERRACLIMATE provides shortwave radiation srad (W/m2)
-
-PAR in these units is often called "photoynthetic photo flux density" (PPFD)
-
-- [Campbell and Norman (1998)](https://link.springer.com/book/10.1007/978-1-4612-1626-1) say 2.35e5 J / mol is the energy content of solar radiation in the PAR waveband
-   i.e. you can convert PPFD (umol/m2/s) to PAR (W/m2) using the PAR = PPFD * 2.35e5
-- PAR is defined as solar radiation with wavelengths in the range 400-700 nm
-- PAR has been empirically measured to contain on average 45% of the energy of shortwave radiation defined as 300-2000nm  [(Britton and Dodd 1976)](https://www.sciencedirect.com/science/article/pii/0002157176900807)
- 
-
-#### Calculating Absolute Minimum Annual Temperature
-
-$$
-\textrm{absmin} = \textrm{tmin} - \textrm{cadj} -\textrm{adjustC}
-$$
-
-- absmin: absolute minimum annual temperature, the daily coldest minimum temperature
-- tmin: average minimum temperature of the coldest month, climatological 
-- adjustC: is from ERA5 and represents the difference in climatological coldest night of the year and daily average lowest temperature of a month. 
-- cadj: perturbation from true coldest month to climatological coldest month
-
-cadj is a minor adjustment to reflect the fact that ERA5 calculations did these calculations dynamically (coldest Tmin in a year minus Tmin of the coldest month) and you have been using coldest Tmin of climatology. The former can allow for the fact that in some years December might be the coldest, in others January. The climatology will tend to have a higher temperature of the coldest month than if you calculated these independently. 
-
-## Model Implementation
-
-The EPI model is implemented using NetCDF Operators in the file [analysis/03-compute.biomass.sh](analysis/03-compute.biomass.sh).
-The key equations of the model are provided below for reference; a full description is provided in Niechayev et al (2019) and the manuscript associated with this archive Davis et al (_submitted_).
-
-> Niechayev, N., Jones, A., Rosenthal, D., & Davis, S. (2019). A model of environmental limitations on production of Agave americana L. grown as a biofuel crop in semi-arid regions. Journal of Experimental Botany, 70, 6549-6559. 
-
-**light index $\alpha$:**
-
-$$
-\alpha=
-\left\{\begin{matrix}
-0,                                   & \textrm{for } I< 0.6252 \\ 
--7\times10^{-7}I^2+0.0016\;I-0.0001, & \textrm{for } I> 0.6252 
-\end{matrix}\right.
-$$
-
-Where $I$ is the daily photosynthetically active radiation for the month.
-
-**precipitation index $\beta$:**
-
-$$
-\beta=
-\left\{\begin{matrix}
-0,                                   & \textrm{for } P\leq 10.219 \\ 
-0.0279\;P-0.2851,                                   & \textrm{for } 10.219< P< 46.061 \\ 
-1, & \textrm{for } P\geq 46.061 
-\end{matrix}\right.
-$$
-
-Where $P$ is the average total monthly precipitation.
-
-**temperature index $\Gamma$:**
-
-$$
-\Gamma=
-\left\{\begin{matrix}
-0,&\textrm{for}\; -3< T < 36\\
--2\times10^{-7}T^5+0.13\times10^{-4}T^3-3.878\times10^{-3}T^2+0.1052T+0.352 ,&\textrm{otherwise}
-\end{matrix}\right.
-$$
-
-Where T is the average daily temperature for the month.
-
-monthly EPI:
-
-$$\textrm{EPI}_\textrm{month}=\alpha\times\beta\times\Gamma$$
-
-**Five year total EPI** is the sum of monthly EPIs multiplied by five:
-
-$$\textrm{EPI}_\textrm{5 years}=5\times\sum_{0}^{12}\textrm{EPI}_\textrm{month}$$
-
-**Predicted Biomass over a 5 year cropping cycle** uses the parameters from 
-
-$$\textrm{Biomass}=1.7607\times\textrm{EPI}-14.774$$
-
-### Simulating Rock Mulch
-
-
-$$\beta_{\textrm{rock mulch}}=\beta * 1.83$$
-
-
-### Simulating Irrigation
-
-Calculate monthly water demand: 
-
-Given $\beta = 0.0279\times\textrm{P}-0.2851$, find the values of $P$ where $\beta\geq 1$?
-
-
-$$\textrm{P}_{\beta=1}=\frac{1+0.2851}{0.0279}\simeq= 46.06093$$
-
-
-  - for each month if
-    - $\alpha > 0$ AND
-    - $\gamma > 0$ AND
-    - $\textrm{P} < 46.061\textrm{mm}$
-  - calculate irrigation required = water demand $46.01  - P$
-  - annual irrigation demand = $\sum_{jan}^{dec}46.01 - \textrm{P}$ calculate sum over all months
-
-### Simulating Freezing Mortality
-
-For any grid cell with absolute minimum annual temperature < -10, set biomass to 0. 
+#### Outputs Data
+- [/analysis/data/derived_data](/analysis/data/derived_data): Outputs available
+  - `coefs19812010.nc` calculated values of $\alpha$, $\beta$, and $\Gamma$ values for each grid cell under 1981-2010 climate normals for three water availability scenarios 
+  - `coefs4C.nc` same as above but for $+4^\circ C$ warming
+  - `allbiomass.nc` predicted annual biomass increments for _Agave americana_ under all climates and scenarios
+  - `biomassdiff.nc` differences between current and future biomass
+  - `not_suitable.gpkg` polygons combining land classified as unsuitable for growing that is either protected (UNEP-WCMC and IUCN 2021) or urbanized (Kelso and Patterson 2010)
+- [analysis/figures](/analysis/figures): Plots and Panoply (plotting software) configuration files.   - contains all map figures generated using Panoply. 
+  - `*.pcl` files provide information about Panoply software settings used to generate the figures. In addition, these files can regenerate the figures with the command `java -jar PanoplyCL.jar [filename].pcl` using a `PanoplyCL.jar` that is available from the Panoply software author [Dr. Robert Schmunk](https://science.gsfc.nasa.gov/sed/bio/robert.b.schmunk).
 
 
 ## Data Sources
@@ -279,6 +125,159 @@ UNEP-WCMC and IUCN (2021), Protected Planet: The World Database on Protected Are
 **exactextractr**  Daniel Baston (2021). exactextractr: Fast Extraction from Raster Datasets using Polygons. R package version 0.6.0. https://CRAN.R-project.org/package=exactextractr
 
 **Panoply** PanoplyCL v 4.12.8 b0071 downloaded from https://www.giss.nasa.gov/tools/panoply/download/beta1f/ can be used to recreate figures, see `.pcl` files in figures directory
+
+
+## Analysis Steps
+
+
+#### 1. Download TERRACLIMATE
+
+```sh
+# ~ 1h @10Mbps
+cd analysis
+Rscript --vanilla ./01-download_climate.R 
+```
+
+#### 2. Download WPDA Protected Areas
+
+Per the [WPDA Data license](https://www.unep-wcmc.org/policies/wdpa-data-licence) this dataset can not be downloaded. 
+
+1. Go to https://www.protectedplanet.net/en/thematic-areas/wdpa
+2. Download `WPDA_WDOECM_Apr2021_Public_all_shp.zip` 
+3. Unzip to `raw_data/WDPA_WDOECM_Apr2021/`
+
+#### 3. Generate mask of protected and urban areas
+
+Combine WPDA with rnaturalearth Urban areas, generate polygons as 'masks.gpkg' 
+
+```r
+Rscript --vanilla ./01.1-combine_masks.R
+
+```
+
+NB at time of publication, this step does not run because of a bug in the rnaturalearth API. See https://github.com/ropensci/rnaturalearth/issues/29 
+
+#### 4. Append TERRACLIMATE and compute derived variables, 
+
+The script 
+```sh
+./02-append_terraclimate.sh
+```
+
+
+##### Calculate PAR
+
+2 * srad * 110 / 1000 * 18
+
+$$
+\textrm{PAR} = 2 \times \textrm{SRAD} \frac{W}{m^{-2}}\times  110\frac{\textrm{lux}}{W}\times 10^{-3}\frac{\textrm{klux}}{\textrm{lux}}\times 18\frac{\mu\textrm{mol}/\textrm{m}^{2}\textrm{s}^{2}}{\textrm{klux}}
+$$
+\times 1e-3 \frac{\textrm{klux}}{\textrm{lux}}} \times 18 \frac{\textrm{a}}{\textrm{b}}}
+
+- SRAD: Mean daily shortwave radiation (W/m2) from TERRACLIMATE
+- PAR: Photosynthetically active radiation in units of (umol photons / m2 / s)
+
+- 110 is the average global annual luminous efficacy value of 110 lumens per W (Littlefair, 1985) in order to convert to lux (lumens per square meter)
+- lux converted into the average daily PAR using the relationship 1 klux = 18 µmol photons m-2 s-1 of daylight. 
+- Multiply by 10<sup>-3</sup> to convert from lux to klux.
+- Multiply x2 to convert from mean PAR integrated over 24 hours to the flux over a 12 hours of daylight on average
+
+##### Calculating Absolute Minimum Annual Temperature
+
+$$
+\textrm{absmin} = \textrm{tmin} - \textrm{cadj} -\textrm{adjustC}
+$$
+
+- `absmin`: absolute minimum annual temperature, the daily coldest minimum temperature
+- `tmin`: average minimum temperature of the coldest month, climatological 
+- `adjustC`: is from ERA5 and represents the difference in climatological coldest night of the year and daily average lowest temperature of a month. 
+- `cadj`: perturbation from true coldest month to climatological coldest month
+
+`cadj` is a minor adjustment to reflect the fact that ERA5 calculations did these calculations dynamically (coldest Tmin in a year minus Tmin of the coldest month) as opposed to using coldest Tmin of climatology. The former allows for the fact that in some years December might be the coldest, in others January. The climatology will tend to have a higher temperature of the coldest month than if these are calculated independently. 
+
+#### 6. Model Implementation
+
+The EPI model is implemented using NetCDF Operators in the file [analysis/03-compute.biomass.sh](analysis/03-compute.biomass.sh).
+The key equations of the model are provided below for reference; a full description is provided in Niechayev et al (2019) and the manuscript associated with this archive Davis et al (_submitted_).
+
+> Niechayev, N., Jones, A., Rosenthal, D., & Davis, S. (2019). A model of environmental limitations on production of Agave americana L. grown as a biofuel crop in semi-arid regions. Journal of Experimental Botany, 70, 6549-6559. 
+
+**light index $\alpha$:**
+
+$$
+\alpha=
+\left\{\begin{matrix}
+0,                                   & \textrm{for } I< 0.6252 \\ 
+-7\times10^{-7}I^2+0.0016\;I-0.0001, & \textrm{for } I> 0.6252 
+\end{matrix}\right.
+$$
+
+Where $I$ is the daily photosynthetically active radiation for the month.
+
+**precipitation index $\beta$:**
+
+$$
+\beta=
+\left\{\begin{matrix}
+0,                                   & \textrm{for } P\leq 10.219 \\ 
+0.0279\;P-0.2851,                                   & \textrm{for } 10.219< P< 46.061 \\ 
+1, & \textrm{for } P\geq 46.061 
+\end{matrix}\right.
+$$
+
+Where $P$ is the average total monthly precipitation.
+
+**temperature index $\Gamma$:**
+
+$$
+\Gamma=
+\left\{\begin{matrix}
+0,&\textrm{for}\; -3< T < 36\\
+-2\times10^{-7}T^5+0.13\times10^{-4}T^3-3.878\times10^{-3}T^2+0.1052T+0.352 ,&\textrm{otherwise}
+\end{matrix}\right.
+$$
+
+Where T is the average daily temperature for the month.
+
+monthly EPI:
+
+$$\textrm{EPI}_\textrm{month}=\alpha\times\beta\times\Gamma$$
+
+**Five year total EPI** is the sum of monthly EPIs multiplied by five:
+
+$$\textrm{EPI}_\textrm{5 years}=5\times\sum_{0}^{12}\textrm{EPI}_\textrm{month}$$
+
+**Predicted Biomass over a 5 year cropping cycle** uses the parameters from 
+
+$$\textrm{Biomass}=1.7607\times\textrm{EPI}-14.774$$
+
+**Simulating Rock Mulch**
+
+
+$$\beta_{\textrm{rock mulch}}=\beta * 1.83$$
+
+
+**Simulating Irrigation**
+
+Calculate monthly water demand: 
+
+Given $\beta = 0.0279\times\textrm{P}-0.2851$, find the values of $P$ where $\beta\geq 1$?
+
+
+$$\textrm{P}_{\beta=1}=\frac{1+0.2851}{0.0279}\simeq= 46.06093$$
+
+
+  - for each month if
+    - $\alpha > 0$ AND
+    - $\gamma > 0$ AND
+    - $\textrm{P} < 46.061\textrm{mm}$
+  - calculate irrigation required = water demand $46.01  - P$
+  - annual irrigation demand = $\sum_{jan}^{dec}46.01 - \textrm{P}$ calculate sum over all months
+
+**Simulating Freezing Mortality**
+
+For any grid cell with absolute minimum annual temperature < -10, set biomass to 0. 
+
 
 ## Licenses
 
