@@ -1,7 +1,7 @@
 # http://nco.sourceforge.net/nco.html#ncatted-netCDF-Attribute-Editor
 
 ## Files with coefficients: coefs19812010.nc and coefs4C.nc
-for climate in 19812010 2C 4C ; do
+for climate in 19812010 4C ; do
   ncatted \
     -a description,alpha,m,c,"alpha (light limitation) coefficient from environmental productivity index model" \
     -a description,beta,m,c,"beta (water limitation) coefficient from environmental productivity index model" \
