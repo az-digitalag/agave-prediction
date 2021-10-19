@@ -4,7 +4,13 @@
 # note that only one historical solar radiation (srad) file is used for all scenarios
 #   because these are not expected to change
 
-for climate in 19812010 2C 4C ; do
+## Total time: ~20 min
+## for profiling https://stackoverflow.com/a/5015179/199217
+PS4='+ $(date "+%s.%N")\011 '
+exec 3>&2 2>02-append_terraclimate.$$.log
+set -x
+
+for climate in 19812010 4C ; do
 
   cp data/raw_data/TerraClimate${climate}_ppt.nc data/derived_data/TerraClimate${climate}.nc
   ncks -A data/raw_data/TerraClimate19812010_srad.nc data/derived_data/TerraClimate${climate}.nc
@@ -13,7 +19,7 @@ for climate in 19812010 2C 4C ; do
   # Compute PAR
   # submitted ncap2 -O -s "par=5.6925*srad" data/derived_data/TerraClimate${climate}.nc data/derived_data/TerraClimate${climate}.nc
 
-  ncap2 -O -s "par=2.875 * srad * 110 / 1000 * 18" data/derived_data/TerraClimate${climate}.nc data/derived_data/TerraClimate${climate}.nc
+  ncap2 -O -s "par=2 * srad * 110 / 1000 * 18" data/derived_data/TerraClimate${climate}.nc data/derived_data/TerraClimate${climate}.nc
 
   ncatted \
     -a description,par,m,c,"photosynthetically active radiation" \
@@ -47,6 +53,8 @@ for climate in 19812010 2C 4C ; do
 done
 
 
+
+
 ## Can be used for testing
 # AZ subset
 #
@@ -56,3 +64,6 @@ done
 # cd data/derived_data
 # ncks -O -d lat,32.5,35.0 -d lon,-120.0,-110.0 TerraClimate4C.nc TerraClimateAZ4C.nc
 # ncks -O -d lat,32.5,35.0 -d lon,-120.0,-110.0 TerraClimate19812010AZ.nc TerraClimateAZ19812010.nc
+## end profiling
+set +x
+exec 2>&3 3>&-
