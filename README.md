@@ -46,7 +46,6 @@ The **analysis/** directory contains code and data used in this paper:
         warming
     -   `allbiomass.nc` predicted annual biomass increments for *Agave
         americana* under all climates and scenarios
-    -   `biomassdiff.nc` differences between current and future biomass
     -   `not_suitable.gpkg` polygons combining land classified as
         unsuitable for growing that is either protected (UNEP-WCMC and
         IUCN 2021) or urbanized (Kelso and Patterson 2010)
@@ -62,8 +61,8 @@ The **analysis/** directory contains code and data used in this paper:
 
 ## Data Sources
 
-Analyses start with these datasets in the `analysis/data/raw_data/`
-folder.
+Analyses start with the following datasets in the
+`analysis/data/raw_data/` folder. These are not provided in the archive.
 
 ### Climate data used as model inputs
 

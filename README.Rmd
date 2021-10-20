@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
   fig.path = "README-"
 )
 # Please put your title here to include it in the file below.
-Title <- "Expanded potential growing region and yield increase for Agave americana with future climate"
+Title <- "Data and Code from: Expanded potential growing region and yield increase for Agave americana with future climate"
 ```
 
 # Future Agave
@@ -46,15 +46,13 @@ The **analysis/** directory contains code and data used in this paper:
   - `coefs19812010.nc` calculated values of $\alpha$, $\beta$, and $\Gamma$ values for each grid cell under 1981-2010 climate normals for three water availability scenarios 
   - `coefs4C.nc` same as above but for $+4^\circ C$ warming
   - `allbiomass.nc` predicted annual biomass increments for _Agave americana_ under all climates and scenarios
-  - `biomassdiff.nc` differences between current and future biomass
   - `not_suitable.gpkg` polygons combining land classified as unsuitable for growing that is either protected (UNEP-WCMC and IUCN 2021) or urbanized (Kelso and Patterson 2010)
 - [analysis/figures](/analysis/figures): Plots and Panoply (plotting software) configuration files.   - contains all map figures generated using Panoply. 
   - `*.pcl` files provide information about Panoply software settings used to generate the figures. In addition, these files can regenerate the figures with the command `java -jar PanoplyCL.jar [filename].pcl` using a `PanoplyCL.jar` that is available from the Panoply software author [Dr. Robert Schmunk](https://science.gsfc.nasa.gov/sed/bio/robert.b.schmunk).
 
-
 ## Data Sources
 
-Analyses start with these datasets in the `analysis/data/raw_data/` folder.
+Analyses start with the following datasets in the `analysis/data/raw_data/` folder. These are not provided in the archive.
 
 ### Climate data used as model inputs
 

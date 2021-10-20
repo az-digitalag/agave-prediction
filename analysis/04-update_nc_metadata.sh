@@ -28,7 +28,7 @@ for climate in 19812010 4C ; do
 
   ## delete extra variables
   ncks -O -x -v par,ppt,srad,tmin coefs${climate}.nc coefs${climate}.nc
-
+  ncks -O -x -v irrig_mo,irrig_mo_rockmulch,absmin,alpha,gamma irrig${climate}.nc irrig${climate}.nc
   # # generate average coefs
   # ncap2 -O  -v -s '
   # alpha_mean=alpha.avg($time);
@@ -70,3 +70,4 @@ ncatted \
   -a long_name,biomassdiffirrig,m,c,change_in_irrigated_biomass_under_4C \
   -a description,biomassdiffirrig,m,c,"Change in irrigated annual biomass production of Agave americana under 4C warming scenario" \
    biomassdiff.nc
+
