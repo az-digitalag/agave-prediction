@@ -10,7 +10,7 @@ output: html_document
 ### Generate figures using Panoply
 
 
-```{sh}
+```{sh, eval = FALSE}
 for f in `ls analysis/figures/*pcl`; do
   java -jar PanoplyCL/PanoplyCL.jar $f
 done

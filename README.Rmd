@@ -20,35 +20,51 @@ Title <- "Data and Code from: Expanded potential growing region and yield increa
 
 This repository contains the code, code documentation, and data description for our paper:
 
-Davis, S.C.; Abatzoglou, J.T.; LeBauer, D.S. Expanded Potential Growing Region and Yield Increase for Agave americana with Future Climate. Agronomy 2021, 11, x. https://doi.org/10.3390/xxxxx
+Growing Region and Yield Increase for Agave americana with Future Climate. Agronomy 2021, 11, 2109. https://doi.org/10.3390/agronomy11112109
 
 ## Contents
 
 
-The **analysis/** directory contains code and data used in this paper:
+### Analysis Code
 
-#### Analysis Code
-    - `01-download_climate.R` downloads the TERRA-Climate data to the `raw_data` directory.
-    - `01.1-combine_masks.R` combines urban and protected area polygons and generates polygons stored in `/data/derived_data/not_suitable.gpkg`
-    - `0.2-append_terraclimate.sh` combines TERRA-CLIMATE data into a single file for each scenario in the derived_data folder. `derived_data` named `TerraClimate4C.nc` and `TerraClimate19812010.nc`
-    - `03-compute.biomass.sh` implements the model under different climate scenarios with rainfed, irrigation, and rock mulch scenarios (described below)
-    - `04-update_nc_metadata.sh` corrects metadata in output netcdf files
+The **analysis/** directory contains code and data used in this paper. The intent is to provide a record of the steps - including data sources and the model structure. All of the code used in the analyses is provided, although it hasn't been run end-to-end as is so can not be considered truly reproducible. This is because many steps are slow, the WPDA data changed since it was originally downloaded, and both netCDF and Panoply can be finicky.
 
-#### Input Data
+Analysis code was run in this order:
+
+```
+01-download_climate.R
+01.1-combine_masks.R
+02-append_terraclimate.sh
+cd data/derived_data/
+03-compute_biomass.sh
+04-update_nc_metadata.sh
+05-analysis.R
+```
+
+- `01-download_climate.R` downloads the TERRA-Climate data to the `raw_data` directory.
+- `01.1-combine_masks.R` combines urban and protected area polygons and generates polygons stored in `/data/derived_data/not_suitable.gpkg`
+- `0.2-append_terraclimate.sh` combines TERRA-CLIMATE data into a single file for each scenario in the derived_data folder. `derived_data` named `TerraClimate4C.nc` and `TerraClimate19812010.nc`
+- `03-compute.biomass.sh` implements the model under different climate scenarios with rainfed, irrigation, and rock mulch scenarios (described below)
+- `04-update_nc_metadata.sh` corrects metadata in output netcdf files
+- `05-analysis.R` applies the urban and protected area masks, generates masked versions of the maps as netCDF files, and calculates the potential area and total biomass for each scenario.
+- `06-figures.Rmd` generates the tables using Panoply and also provides alternatives to generating maps in R, but these were not used.
+
+### Raw (Input) Data
 
 - [/analysis/data/raw_data](/analysis/data/raw_data): 
   - TERRACLIMATE files must be downloaded to this folder using the `01-download_climate.R` script
   - WPDA Shapefiles can be downloaded from www.protectedplanet.net
 
-#### Output Data
+### Derived (Output) Data
 
 - [/analysis/data/derived_data](/analysis/data/derived_data): Outputs available
   - `coefs19812010.nc` calculated values of $\alpha$, $\beta$, and $\Gamma$ values for each grid cell under 1981-2010 climate normals for three water availability scenarios 
   - `coefs4C.nc` same as above but for $+4^\circ C$ warming
   - `allbiomass.nc` predicted annual biomass increments for _Agave americana_ under all climates and scenarios
   - `not_suitable.gpkg` polygons combining land classified as unsuitable for growing that is either protected (UNEP-WCMC and IUCN 2021) or urbanized (Kelso and Patterson 2010)
-- [analysis/figures](/analysis/figures): Plots and Panoply (plotting software) configuration files.   - contains all map figures generated using Panoply. 
-  - `*.pcl` files provide information about Panoply software settings used to generate the figures. In addition, these files can regenerate the figures with the command `java -jar PanoplyCL.jar [filename].pcl` using a `PanoplyCL.jar` that is available from the Panoply software author [Dr. Robert Schmunk](https://science.gsfc.nasa.gov/sed/bio/robert.b.schmunk).
+  - 
+- [analysis/figures](/analysis/figures): Plots and Panoply (plotting software) configuration files. Contains all map figures generated using Panoply.
+  - `*.pcl` files provide information about Panoply software settings used to generate the figures. In addition, these files can regenerate the figures with the command `java -jar PanoplyCL.jar [filename].pcl` using a `PanoplyCL.jar` that is available on request from the Panoply software author [Dr. Robert Schmunk](https://science.gsfc.nasa.gov/sed/bio/robert.b.schmunk).
 
 ## Data Sources
 
