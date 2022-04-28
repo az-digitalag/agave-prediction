@@ -174,16 +174,13 @@ The script
 
 ##### Calculate PAR
 
-2 * srad * 110 / 1000 * 18
 
 $$
 \textrm{PAR} = 2 \times \textrm{SRAD} \frac{W}{m^{-2}}\times  110\frac{\textrm{lux}}{W}\times 10^{-3}\frac{\textrm{klux}}{\textrm{lux}}\times 18\frac{\mu\textrm{mol}/\textrm{m}^{2}\textrm{s}^{2}}{\textrm{klux}}
 $$
-\times 1e-3 \frac{\textrm{klux}}{\textrm{lux}}} \times 18 \frac{\textrm{a}}{\textrm{b}}}
 
-- SRAD: Mean daily shortwave radiation (W/m2) from TERRACLIMATE
+- SRAD: Mean daily shortwave radiation (W/m2) from TERRACLIMATE 
 - PAR: Photosynthetically active radiation in units of (umol photons / m2 / s)
-
 - 110 is the average global annual luminous efficacy value of 110 lumens per W (Littlefair, 1985) in order to convert to lux (lumens per square meter)
 - lux converted into the average daily PAR using the relationship 1 klux = 18 µmol photons m-2 s-1 of daylight. 
 - Multiply by 10<sup>-3</sup> to convert from lux to klux.
