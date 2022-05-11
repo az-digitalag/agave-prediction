@@ -184,20 +184,23 @@ www.protectedplanet.net
 The file `allbiomass.nc` provides predicted annual biomass increments
 for *Agave americana* under all climates and scenarios.
 
-Other intermediate files of interest: - `absmin19812010.nc` and
-`absmin4C.nc`contain the variable absmin, the absolute minimum
-temperature. It also contains the variables `tmin`, `adjustC`, and
-`cadj` used to compute `absmin` as described in [Calculating Absolute
-Minimum Annual
-Temperature](#Calculating-Absolute-Minimum-Annual-Temperature). -
-`coefs19812010.nc` and `coefs4C.nc` provide calculated values of
-![\\alpha](http://codecogs.tomagrade.com/png.latex?%5Calpha "\alpha"),
-![\\beta](http://codecogs.tomagrade.com/png.latex?%5Cbeta "\beta"), and
-![\\Gamma](http://codecogs.tomagrade.com/png.latex?%5CGamma "\Gamma")
-for each grid cell under 1981-2010 and +4C climate normals for three
-water availability scenarios. - `not_suitable.gpkg` polygons combining
-land classified as unsuitable for growing that is either protected
-(UNEP-WCMC and IUCN 2021) or urbanized (Kelso and Patterson 2010).
+Other intermediate files of interest:
+
+-   `absmin19812010.nc` and `absmin4C.nc`contain the variable absmin,
+    the absolute minimum temperature. It also contains the variables
+    `tmin`, `adjustC`, and `cadj` used to compute `absmin` as described
+    in [Calculating Absolute Minimum Annual
+    Temperature](#Calculating-Absolute-Minimum-Annual-Temperature).
+-   `coefs19812010.nc` and `coefs4C.nc` provide calculated values of
+    ![\\alpha](http://codecogs.tomagrade.com/png.latex?%5Calpha "\alpha"),
+    ![\\beta](http://codecogs.tomagrade.com/png.latex?%5Cbeta "\beta"),
+    and
+    ![\\Gamma](http://codecogs.tomagrade.com/png.latex?%5CGamma "\Gamma")
+    for each grid cell under 1981-2010 and +4C climate normals for three
+    water availability scenarios.
+-   `not_suitable.gpkg` polygons combining land classified as unsuitable
+    for growing that is either protected (UNEP-WCMC and IUCN 2021) or
+    urbanized (Kelso and Patterson 2010).
 
 ### Analysis Steps
 
